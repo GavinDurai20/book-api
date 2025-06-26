@@ -1,4 +1,4 @@
-echo ^# Book API Project - 📘 Internship Task 3
+# Book API Project - 📘 Internship Task 3
 
 This project was completed as part of **Web Development Internship – Task 3**.
 
