@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📚 Book API Frontend</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; background: #f4f4f4; }
+    h1 { color: #333; }
+    input, button { margin: 5px; padding: 5px; }
+    .book-card { border: 1px solid #ccc; padding: 10px; margin: 10px 0; background: white; }
+  </style>
+</head>
+<body>
+  <h1>📚 Book Manager</h1>
+
+  <h2>Add a New Book</h2>
+  <input type="text" id="title" placeholder="Title">
+  <input type="text" id="author" placeholder="Author">
+  <button onclick="addBook()">Add Book</button>
+
+  <h2>All Books</h2>
+  <div id="book-list"></div>
+
+  <script>
+    const API = "http://localhost:3000/books";
+
+    // Fetch all books
+    async function fetchBooks() {
+      const res = await fetch(API);
+      const books = await res.json();
+
+      const list = document.getElementById('book-list');
+      list.innerHTML = '';
+
+      books.forEach(book => {
+        const div = document.createElement('div');
+        div.className = 'book-card';
+        div.innerHTML = `
+          <strong>${book.title}</strong> by ${book.author} <br>
+          <button onclick="deleteBook(${book.id})">Delete</button>
+          <button onclick="editBook(${book.id}, '${book.title}', '${book.author}')">Edit</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    // Add new book
+    async function addBook() {
+      const title = document.getElementById('title').value;
+      const author = document.getElementById('author').value;
+
+      await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, author })
+      });
+
+      document.getElementById('title').value = '';
+      document.getElementById('author').value = '';
+      fetchBooks();
+    }
+
+    // Delete book
+    async function deleteBook(id) {
+      await fetch(`${API}/${id}`, { method: 'DELETE' });
+      fetchBooks();
+    }
+
+    // Edit book (simple prompt-based)
+    async function editBook(id, oldTitle, oldAuthor) {
+      const title = prompt("New Title:", oldTitle);
+      const author = prompt("New Author:", oldAuthor);
+
+      if (title && author) {
+        await fetch(`${API}/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, author })
+        });
+        fetchBooks();
+      }
+    }
+
+    // Load books on page load
+    fetchBooks();
+  </script>
+</body>
+</html>
