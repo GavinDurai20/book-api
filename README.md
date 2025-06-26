@@ -17,15 +17,6 @@ The task was to build a basic **REST API** using **Node.js** and **Express.js** 
 - **Express.js**
 - **CORS Middleware**
 
-## 📁 Folder Structure
-
-book-api/
-├── index.js              # Main backend Express server
-├── package.json
-├── public/
-│   └── index.html        # Frontend for testing the API
-└── .gitignore
-
 ## 🚀 How to Run
 
 1. Clone the repository:
