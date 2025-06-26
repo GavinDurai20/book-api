@@ -70,4 +70,3 @@ http://localhost:3000/
 
 
 ## 🙌 Thank You!
-> README.md
